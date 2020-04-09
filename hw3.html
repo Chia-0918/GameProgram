@@ -74,33 +74,33 @@
 
 			function init() {
 			  
-			  scene = new THREE.Scene();
-
-			  renderer = new THREE.WebGLRenderer();
-			  renderer.setSize(window.innerWidth, window.innerHeight);
-			  renderer.setClearColor(0x888888);
-			  width = window.innerWidth;
-			  height = window.innerHeight;
+				scene = new THREE.Scene();
+	
+				renderer = new THREE.WebGLRenderer();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.setClearColor(0x888888);
+				width = window.innerWidth;
+				height = window.innerHeight;
 							
-			  renderer.setSize(window.innerWidth, window.innerHeight);
-			  document.body.appendChild(renderer.domElement);
-
-			  var gyro = new THREE.Gyroscope();
-			  scene.add(gyro);
-			  camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
-			  camera.position.z = 500;
-			  camera.position.y = 150;
-			  gyro.add(camera);
-			  
-			  camera1 = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
-			  camera1.position.z = 500;
-			  let controls = new THREE.OrbitControls(camera1, renderer.domElement);
-
-			  ////////////////////////////////////////////////////////////////
-			  var gridXZ = new THREE.GridHelper(200, 20, 'red', 'white');
-			  scene.add(gridXZ);
-			  ///////////////////////////////////////////////
-			  //mine body set
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				document.body.appendChild(renderer.domElement);
+	
+				var gyro = new THREE.Gyroscope();
+				scene.add(gyro);
+				camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+				camera.position.z = 500;
+				camera.position.y = 150;
+				gyro.add(camera);
+				
+				camera1 = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+				camera1.position.z = 500;
+				let controls = new THREE.OrbitControls(camera1, renderer.domElement);
+	
+				////////////////////////////////////////////////////////////////
+				var gridXZ = new THREE.GridHelper(200, 20, 'red', 'white');
+				scene.add(gridXZ);
+				///////////////////////////////////////////////
+				//mine body set
 				mine = new THREE.Group();
 				head = makeHead();
 				head.position.y = 7.57*k;
@@ -225,7 +225,7 @@
 			}
 
 			function animate() {
-			  mine_theta += 0.02;
+			  mine_theta += 0.018;
 			  armL.rotation.y = intKey[0];//gcontrol.theta1;//Math.PI/4;
 			  legL.rotation.y = intKey[1];//gcontrol.theta2;//-Math.PI/4;
 			  armR.rotation.y = -intKey[0];
