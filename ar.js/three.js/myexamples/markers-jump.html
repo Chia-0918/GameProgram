@@ -271,9 +271,10 @@ function animate() {
 	
 	// using SpriteText
 	sprite.position.copy (hulkGroup.position)
+	sprite.position.y += 50;
 	console.log (sprite.position.x + ',' + sprite.position.y + ',' + sprite.position.z)	
-	sprite.position.y += 1.5;
-	sprite.material.visible = hulkGroup.visible;
+	
+	sprite.material.visible = arToolkitSource.visible;
 	sprite.text = 'SPRITE'
 }
 
