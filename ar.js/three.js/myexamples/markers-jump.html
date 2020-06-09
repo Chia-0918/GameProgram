@@ -270,10 +270,10 @@ function animate() {
 	//hulkMesh.position.x = 0.5 *_sign
 	
 	// using SpriteText
-	sprite.position.copy (hulkMesh.position)
+	sprite.position.copy (hulkGroup.position)
 	//console.log (sprite.position.x + ',' + sprite.position.y + ',' + sprite.position.z)	
 	sprite.position.y += 1.5;
-	sprite.material.visible = hulkMesh.visible;
+	sprite.material.visible = hulkGroup.visible;
 	sprite.text = 'SPRITE'
 }
 
