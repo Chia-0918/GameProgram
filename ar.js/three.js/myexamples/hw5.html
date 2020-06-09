@@ -8,51 +8,37 @@
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
-<div style='font-size:2em;position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js mobile performance
-	<br/>
-	Initialize both markers, but show them in controlled fashion
+<div id="info">Agent (Seek, Arrival, Collision)<br>
+<p id="message"></p>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/107/three.min.js"></script>
+<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<script src="./agent0.js"></script>
+<script src="./obstacle.js"></script>
+<script src="./target.js"></script>
+
+<!-- must be before main.js -->
+<script src="./scene.js"></script>
+<script src="./threemain.js"></script>
+
+<script src="./main.js"></script>
 <script>
 
-// global variables
 var renderer, scene, camera;
 var stats;
 var markerKanji, markerHiro;
 var arToolKitSource, arToolKitContext;
 
-var raycaster, pickables;
+var raycaster, mouse, pickables;
 var showHiro = false;
-var _iOSDevice;
-
-var counter = 0, _sign = 1;
 
 init();
 animate();
 
 function init() {
-	// https://stackoverflow.com/questions/9038625/detect-if-device-is-ios?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-	let _iOSDevice = !!navigator.platform.match(/iPhone|iPod|iPad/);
-
-	console.log ('iOS: ' + _iOSDevice)
-
-
-	// init renderer
-	renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
-		alpha: true
-	});
-	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	// renderer.setPixelRatio( 1/2 );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.domElement.style.position = 'absolute'
-	renderer.domElement.style.top = '0px'
-	renderer.domElement.style.left = '0px'
-	document.body.appendChild( renderer.domElement );
-
-	// init scene and camera
-	scene	= new THREE.Scene();
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
@@ -111,10 +97,10 @@ function init() {
 		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 	})
 
-	//markerKanji = addMarkerKanji();
-	//scene.add (markerKanji);
+	markerKanji = addMarkerKanji();
+	scene.add (markerKanji);
 	markerHiro = addMarkerHiro();
-	scene.add (markerHiro); 
+	// scene.add (markerHiro); // hide at first
 	
 	
 	stats = new Stats();
@@ -122,35 +108,22 @@ function init() {
 
 	////////////////////////////////////////////////////////
 	// picker
-/*	
-	if (_iOSDevice)
-		window.addEventListener('touchstart', onTouchStart, false) 
-	else
-		window.addEventListener ('mousedown', onMouseDown, false);
+	window.addEventListener ('mousedown', onMouseDown, false);
 	raycaster = new THREE.Raycaster();
+	mouse = new THREE.Vector2();
 	pickables = [markerKanji];	
-*/
+
 
 }
-/*
-function onTouchStart (event) {
-	console.log ('in touch start')
-
-   if (event.touches.length == 1) {
-        
-		event.preventDefault();
-		let ndcX = ( event.touches[0].pageX / window.innerWidth ) * 2 - 1;
-		let ndcY = - ( event.touches[0].pageY / window.innerHeight ) * 2 + 1;
 	
-		doToggleHiro (ndcX, ndcY);		
-		
-	}	
-}	
-	
-function doToggleHiro (ndcX, ndcY) {
+function onMouseDown (event) {
+	event.preventDefault();
+  	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  	
   	//raycaster.ray.origin.setFromMatrixPosition( camera.matrixWorld );
 	raycaster.ray.origin.set (0,0,0)
-	raycaster.ray.direction.set( ndcX, ndcY, 0.5 ).unproject( camera ).sub( raycaster.ray.origin ).normalize();
+	raycaster.ray.direction.set( mouse.x, mouse.y, 0.5 ).unproject( camera ).sub( raycaster.ray.origin ).normalize();
 			
   	var intersects = raycaster.intersectObjects(pickables, true);
   	if (intersects.length > 0) {
@@ -164,94 +137,78 @@ function doToggleHiro (ndcX, ndcY) {
 	} else {
 		scene.remove (markerHiro)
 	}
-
 }
 
-function onMouseDown (event) {
-	event.preventDefault();
-  	let ndcX = (event.clientX / window.innerWidth) * 2 - 1;
-  	let ndcY = -(event.clientY / window.innerHeight) * 2 + 1;
-
-	doToggleHiro (ndcX, ndcY)  	
-}
-*/
 	
-function addMarkerHiro () {
-	let markerRootHiro = new THREE.Group();
-	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRootHiro, {
+function addMarkerKanji () {
+	let markerRootKanji = new THREE.Group();
+	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRootKanji, {
 		type : 'pattern',
-		 patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+		 patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
 	})
+
+	// add a torus knot	
 
 	var geometry	= new THREE.PlaneGeometry(1,1);
 		
 	let loader = new THREE.TextureLoader();
 	loader.setCrossOrigin('')
 	let texture = loader.load( 'https://i.imgur.com/J0RenHB.png' );
-	//let texture = loader.load( 'https://i.imgur.com/oRYPJ5X.png' );
 	
 	let material = new THREE.MeshBasicMaterial( { 
 		map: texture,
-		transparent: true,
-		side: THREE.DoubleSide
-		} );
+		transparent: true
+		 } );
 
-	let hulkGroup = new THREE.Object3D();
-	markerRootHiro.add (hulkGroup);
-	
 	let mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
+	mesh.position.z = 0.5;
 	
-	hulkGroup.add (mesh);
+	markerRootKanji.add (mesh);
 
-/*
-let cube = new THREE.Mesh (new THREE.BoxGeometry (3,2,1), new THREE.MeshNormalMaterial())
-markerRootHiro.add (cube)
-cube.position.z = -5;
-*/
 	/// add gridhelper
-	var gridXZ = new THREE.GridHelper(1,10);
-	markerRootHiro.add (gridXZ);
+	var gridXZ = new THREE.GridHelper(2,10);
+	markerRootKanji.add (gridXZ);
 	
-	return markerRootHiro;
+	return markerRootKanji;
 }
 
+function addMarkerHiro(){
+	let markerRoot = new THREE.Group()
 
+	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+		type : 'pattern',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	})
+
+	// add a torus knot	
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var material	= new THREE.MeshNormalMaterial();
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	
+	markerRoot.add (mesh);
+		
+	return markerRoot;
+}
 
 function animate() {
 	requestAnimationFrame (animate);
 	
+	// Line 111:
 	if( arToolkitSource.ready === false )	return
 	arToolkitContext.update( arToolkitSource.domElement )
 
+	// Line 154:
+	// markerHiro rotation
+	if (showHiro) {
+		markerHiro.children[0].rotation.x += 0.1;
+	}
+	
+	// Line 215:
 	renderer.render (scene, camera);
 	stats.update();
 	
-	// billboard of Hulk
-	// camera at eye coord: (0,0,0)
-	// corresponding marker coordinate:
-	let p0 = new THREE.Vector3 (0,0,0)
-	let mw = new THREE.Matrix4();		
-	p0.applyMatrix4 (mw.getInverse(markerHiro.matrixWorld));
-
-	p0.y = 0;
-	let front = new THREE.Vector3(0,0,1);
-	let angle = p0.angleTo (front);
-	let axis = new THREE.Vector3();
-	axis.crossVectors ( front, p0 ).normalize();
-	let hulkGroup = markerHiro.children[0];
-	if (axis.y > 0)  // 0, 1, 0
-		hulkGroup.rotation.y = angle;
-	else 
-		hulkGroup.rotation.y = -angle;
-			
-	let hulkMesh = hulkGroup.children[0]
-
-	// ++counter;
-	// if (counter % 50 === 0) {
-	// 	_sign *= -1;
-	// }
-	hulkMesh.position.x = 0.5 *_sign
 }
-
-</script></body>
+</script>
+</body>
