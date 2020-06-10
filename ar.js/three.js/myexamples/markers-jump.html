@@ -215,6 +215,7 @@ function addMarkerHiro () {
 	markerRootHiro.add (hulkGroup);
 	
 	let mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.z = 10;
 	mesh.position.y	= geometry.parameters.height/2
 	mesh.rotation.x = -Math.PI/2 // rotated world 
 	
