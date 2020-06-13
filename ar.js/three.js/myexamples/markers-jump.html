@@ -210,14 +210,27 @@ function addMarkerHiro () {
 		transparent: true,
 		side: THREE.DoubleSide
 		} );
+	/////////////////////////////////////////////////////
+	let loader1 = new THREE.TextureLoader();
+	loader1.setCrossOrigin('')
+	let texture1 = loader1.load( 'https://i.imgur.com/HFRc9pD.jpg' );
+	//let texture1 = loader1.load( 'https://i.imgur.com/oRYPJ5X.png' );
+	
+	let material1 = new THREE.MeshBasicMaterial( { 
+		map: texture1,
+		transparent: true,
+		side: THREE.DoubleSide
+		} );
+	/////////////////////////////////////////////////////
 
 	let hulkGroup = new THREE.Object3D();
 	markerRootHiro.add (hulkGroup);
 	
-	let mesh	= new THREE.Mesh( geometry, material );
+	let mesh	= new THREE.Mesh( material1, material );
 	//mesh.position.z = -10;
 	mesh.position.y	= geometry.parameters.height/2
-	mesh.rotation.x = -Math.PI/2 // rotated world 
+	mesh.rotation.x = -Math.PI/2 // rotated world
+	//////////////////////////////////////////
 	
 	hulkGroup.add (mesh);
 
