@@ -233,7 +233,8 @@ function addMarkerHiro () {
 	fillStyle: '#FFFF00',
 	antialias: true
 	});
-	sprite.position.set(0, 0, 0);
+	sprite.text = 'SPRITE'
+	sprite.position.set(10, 10, 10);
 	sprite.scale.set(.015, .015, .015);
 	sprite.rotation.x = -Math.PI/2 // rotated world
 	hulkGroup.add(sprite);
@@ -299,11 +300,10 @@ function animate() {
 
 	sprite.position.y += 50;
 	sprite.position.z += 50;
-	sprite.rotation.x = -Math.PI/2
 	console.log (sprite.position.x + ',' + sprite.position.y + ',' + sprite.position.z)	
 	
 	sprite.material.visible = arToolkitSource.visible;
-	sprite.text = 'SPRITE'
+	
 }
 
 </script></body>
