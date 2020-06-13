@@ -222,9 +222,6 @@ function addMarkerHiro () {
 	mesh.position.y	= geometry.parameters.height/2
 	mesh.rotation.x = -Math.PI/2 // rotated world
 	
-	hulkGroup.add (mesh);
-	hulkGroup.add (mesh1);
-	
 	//////////////////////////////////////////////
 	// SpriteText
 	var SpriteText2D = THREE_Text.SpriteText2D;
@@ -240,6 +237,12 @@ function addMarkerHiro () {
 	sprite.scale.set(.015, .015, .015);
 	sprite.rotation.x = -Math.PI/2 // rotated world
 	hulkGroup.add(sprite);
+	
+	
+	hulkGroup.add (mesh);
+	hulkGroup.add (mesh1);
+	
+	
 
 /*
 let cube = new THREE.Mesh (new THREE.BoxGeometry (3,2,1), new THREE.MeshNormalMaterial())
