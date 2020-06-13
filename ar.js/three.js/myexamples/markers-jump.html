@@ -132,19 +132,7 @@ function init() {
 	raycaster = new THREE.Raycaster();
 	pickables = [markerKanji];	
 */
-// SpriteText
-  var SpriteText2D = THREE_Text.SpriteText2D;
-  var textAlign = THREE_Text.textAlign;
 
-  sprite = new SpriteText2D("TEST", {
-	align: textAlign.center,
-	font: '10px Courier',
-	fillStyle: '#FFFF00',
-	antialias: true
-  });
-//  sprite.position.set(0, 0, 0);
-  sprite.scale.set(.015, .015, .015);
-  scene.add(sprite);
 
 }
 /*
@@ -236,6 +224,21 @@ function addMarkerHiro () {
 	
 	hulkGroup.add (mesh);
 	hulkGroup.add (mesh1);
+	
+	//////////////////////////////////////////////
+	// SpriteText
+	var SpriteText2D = THREE_Text.SpriteText2D;
+	var textAlign = THREE_Text.textAlign;
+	
+	sprite = new SpriteText2D("TEST", {
+	align: textAlign.center,
+	font: '10px Courier',
+	fillStyle: '#FFFF00',
+	antialias: true
+	});
+	//  sprite.position.set(0, 0, 0);
+	sprite.scale.set(.015, .015, .015);
+	hulkGroup.add(sprite);
 
 /*
 let cube = new THREE.Mesh (new THREE.BoxGeometry (3,2,1), new THREE.MeshNormalMaterial())
