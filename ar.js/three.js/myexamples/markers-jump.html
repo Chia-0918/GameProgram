@@ -116,7 +116,9 @@ function init() {
 	//markerKanji = addMarkerKanji();
 	//scene.add (markerKanji);
 	markerHiro = addMarkerHiro();
-	scene.add (markerHiro); 
+	markerHiro1 = addMarkerHiro1();
+	var mesh = new THREE.Mesh( markerHiro, markerHiro1 );
+	scene.add (mesh); 
 	
 	
 	stats = new Stats();
@@ -233,7 +235,47 @@ cube.position.z = -5;
 	return markerRootHiro;
 }
 
+function addMarkerHiro1 () {
+	let markerRootHiro = new THREE.Group();
+	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRootHiro, {
+		type : 'pattern',
+		 patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	})
 
+	var geometry	= new THREE.PlaneGeometry(1,1);
+		
+	let loader = new THREE.TextureLoader();
+	loader.setCrossOrigin('')
+	let texture = loader.load( 'https://i.imgur.com/HFRc9pD.jpg' );
+	//let texture = loader.load( 'https://i.imgur.com/oRYPJ5X.png' );
+	
+	let material = new THREE.MeshBasicMaterial( { 
+		map: texture,
+		transparent: true,
+		side: THREE.DoubleSide
+		} );
+
+	let hulkGroup = new THREE.Object3D();
+	markerRootHiro.add (hulkGroup);
+	
+	let mesh	= new THREE.Mesh( geometry, material );
+	//mesh.position.z = -10;
+	mesh.position.y	= geometry.parameters.height/2
+	mesh.rotation.x = -Math.PI/2 // rotated world 
+	
+	hulkGroup.add (mesh);
+
+/*
+let cube = new THREE.Mesh (new THREE.BoxGeometry (3,2,1), new THREE.MeshNormalMaterial())
+markerRootHiro.add (cube)
+cube.position.z = -5;
+*/
+	/// add gridhelper
+	var gridXZ = new THREE.GridHelper(1,10);
+	markerRootHiro.add (gridXZ);
+	
+	return markerRootHiro;
+}
 
 function animate() {
 	requestAnimationFrame (animate);
