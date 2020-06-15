@@ -183,7 +183,7 @@ function addMarkerHiro () {
 	let markerRootHiro = new THREE.Group();
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRootHiro, {
 		type : 'pattern',
-		 patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+		 patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.ttu'
 	})
 
 	var geometry	= new THREE.PlaneGeometry(1,1);
@@ -236,7 +236,7 @@ function addMarkerHiro () {
 	sprite.text = '我畢業了'
 	sprite.position.set(10, 10, 10);
 	sprite.scale.set(.015, .015, .015);
-	sprite.rotation.x = -Math.PI/2 // rotated world
+	//sprite.rotation.y = -Math.PI/2 // rotated world
 	hulkGroup.add(sprite);
 	
 	
