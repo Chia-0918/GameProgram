@@ -236,7 +236,8 @@ function addMarkerHiro () {
 	sprite.text = '我畢業了'
 	sprite.position.set(10, 10, 10);
 	sprite.scale.set(.015, .015, .015);
-	//sprite.rotation.y = -Math.PI/2 // rotated world
+	sprite.rotation.y = -Math.PI/2 // rotated world
+	
 	hulkGroup.add(sprite);
 	
 	
@@ -298,7 +299,7 @@ function animate() {
 	
 	console.log (sprite.position.x + ',' + sprite.position.y + ',' + sprite.position.z)	
 	sprite.position.copy (hulkGroup.position)
-	//sprite.position.set(0, 51, 0);
+	sprite.position.y = 51;
 	console.log (sprite.position.x + ',' + sprite.position.y + ',' + sprite.position.z)
 	
 	sprite.material.visible = arToolkitSource.visible;
